@@ -5,7 +5,7 @@ const orgSchema = mongoose.Schema(
     {
         name: {
             type: String, 
-            required: true, 
+            required: false, 
             trim: true, 
             validate: {
                 validator: (value) => {
