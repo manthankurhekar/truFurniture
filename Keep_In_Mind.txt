@@ -1,0 +1,9 @@
+1) default role maine diya hi nahi h
+
+2) default admin set kiya h, we have to set it to non-admin eventually in the user model
+
+3) i am considering the phone number to be indian so the regex check if for indian phone number
+
+4) social media handles of organization required: false ahe
+
+
