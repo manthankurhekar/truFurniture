@@ -9,40 +9,21 @@ const retailerSchema = mongoose.Schema({
   },
   address: {
     type: String,
-    required: true,
+    required:  true,
     trim: true,
-    validate: {
-      validator: (value) => {
-        return value.trim().length > 0;
-      },
-      message: "Address cannot be empty",
-    },
+    minLength: 1, 
   },
   zipCode: {
     type: String,
     required: true,
     trim: true,
-    validate: [
-      {
-        validator: (value) => {
-          return value.trim().length > 0;
-        },
-        message: "Zip code cannot be empty",
-      },
-    ],
+    minLength: 1,
   },
   city: {
     type: String,
     required: true,
     trim: true,
-    validate: [
-      {
-        validator: (value) => {
-          return value.trim().length > 0;
-        },
-        message: "City cannot be empty",
-      },
-    ],
+    minLength: 1,
   },
 });
 
