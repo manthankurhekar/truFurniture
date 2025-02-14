@@ -5,39 +5,16 @@ const orgSchema = mongoose.Schema(
     {
         name: {
             type: String, 
-            required: false, 
-            trim: true, 
-            validate: {
-                validator: (value) => {
-                    return value.trim().length > 0;
-                },
-                message: "Name cannot be empty"
-            }
         }, 
         logo: {
             type: String, 
-            trim: true, 
-            required: false, 
-            validate: {
-                validator: (value) => {
-                    return value.trim().length > 0;
-                },
-                message: "Logo cannot be empty"
-            }
         }, 
         socialMediaHandles : {
             type: [String], 
-            required: false, 
-            validate: {
-                validator: (value) => {
-                    return value.length > 0;
-                },
-                message: "Social Media Handles cannot be empty"
-            }
         }, 
         orgType: {
             type: String, 
-            required: false, 
+            required: false,
             enum: ['manufacturer', 'retailer']
         }
     }

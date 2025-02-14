@@ -17,12 +17,8 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      validate: {
-        validator: (value) => {
-          return value.trim().length > 0;
-        },
-        message: "Name cannot be empty",
-      },
+      minlength: 1,
+      message: "Name cannot be empty",
     },
     email: {
       type: String,
@@ -30,13 +26,9 @@ const userSchema = mongoose.Schema(
       unique: true,
       trim: true,
       lowercase: true,
+      minlength: 1,
+      message: "Email cannot be empty",
       validate: [
-        {
-          validator: (value) => {
-            return value.trim().length > 0;
-          },
-          message: "Email cannot be empty",
-        },
         {
           validator: validateEmail,
           message: "Email is invalid",
@@ -66,12 +58,6 @@ const userSchema = mongoose.Schema(
       trim: true,
       // the regex check is for indian phone numbers
       validate: [
-        {
-          validator: (value) => {
-            return value.trim().length > 0;
-          },
-          message: "Phone number cannot be empty",
-        },
         {
           validator: (value) => {
             const phoneRegex = /^[0-9]{10}$/;
