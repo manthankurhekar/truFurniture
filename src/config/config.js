@@ -14,8 +14,12 @@ const envVarsSchema = Joi.object()
     PORT: Joi.number().default(3000),
     MONGODB_URL: Joi.string().required().description('Mongo DB url'),
     JWT_SECRET: Joi.string().required().description('JWT access secret key'),
-    JWT_ACCESS_EXPIRATION_HOUR: Joi.number().default(2).description('daily hour at which jwt token will expire automatically'),
-    }) 
+    JWT_ACCESS_EXPIRATION_HOUR: Joi.number().default(2).description('daily hour at which jwt token will expire automatically'),  
+    SMTP_HOST: Joi.string().required().description('smtp host address'),
+    SMTP_PORT: Joi.number().required().description('smtp port'), 
+    SMTP_USER: Joi.string().required().description('smtp user'), 
+    SMTP_USER_PASS: Joi.string().required().description('smtp user password')
+  }) 
   .unknown();
 
 const { value: envVars, error } = envVarsSchema.prefs({ errors: { label: 'key' } }).validate(process.env);
@@ -33,5 +37,11 @@ module.exports = {
   jwt: {
     secret: envVars.JWT_SECRET,
     accessExpirationHour: envVars.JWT_ACCESS_EXPIRATION_HOUR
+  }, 
+  smtp: {
+    host: envVars.SMTP_HOST, 
+    port: envVars.SMTP_PORT, 
+    user: envVars.SMTP_USER, 
+    userPass: envVars.SMTP_USER_PASS
   }
 };

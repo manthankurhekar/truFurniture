@@ -103,6 +103,12 @@ userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
   return !!user;
 };
 
+userSchema.statics.isPhoneNumberTaken = async function (phoneNumber, excludeUserId) {
+  const user = await this.findOne({ phoneNumber, _id: { $ne: excludeUserId } });
+  return !!user;
+};
+
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;

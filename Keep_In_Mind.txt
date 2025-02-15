@@ -6,4 +6,5 @@
 
 4) social media handles of organization required: false ahe
 
-
+5) i have currently hard coded the value for response.body.verdict -> true which
+   tells whether to accept the registration request or not

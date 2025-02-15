@@ -26,6 +26,11 @@ const orgSchema = mongoose.Schema({
   },
 });
 
+organizationSchema.statics.isNameTaken = async function (name, excludeOrgId) {
+  const org = await this.findOne({ name, _id: { $ne: excludeOrgId } });
+  return !!org;
+};
+
 orgSchema.plugin(toJSON);
 
 const Organization = mongoose.model("Organization", orgSchema);

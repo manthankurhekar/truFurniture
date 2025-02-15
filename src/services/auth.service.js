@@ -1,8 +1,7 @@
 const httpStatus = require('http-status');
-const userService = require('./user.service');
+const userService = require('./retailer.service');
 const ApiError = require('../utils/ApiError');
 const logger = require('../config/logger');
-const tokenService = require('../services/token.service');
 
 // provide email and password and this function will check if the use exists
 // if not then it will throw and error
@@ -25,3 +24,14 @@ module.exports = {
   loginUserWithEmailAndPassword,
   logout
 };
+
+
+
+
+
+
+
+
+
+
+
