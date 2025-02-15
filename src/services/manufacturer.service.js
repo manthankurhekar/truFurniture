@@ -6,8 +6,7 @@ const Organization = require("../models/organization.model");
 const crypto = require("crypto");
 const Admin = require("../models/admin.model");
 const { sendMail } = require("../services/email.service");
-const { join } = require("path");
-
+const disposableEmail = require('disposable-email');
 // manufacturer body contains
 // organizationName, email, phoneNumber, name
 
@@ -17,18 +16,22 @@ const createManufacturer = async (manufacturerBody) => {
     logger.error("Email already taken");
     throw new ApiError(httpStatus.status.BAD_REQUEST, "Email already taken");
   }
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+  if (!validateEmail(email) && !disposableEmail.validate(email)) {
+    logger.error("Email is invalid");
+    throw new ApiError(httpStatus.status.BAD_REQUEST, "Email is invalid");
+  }
   if (await User.isPhoneNumberTaken(phoneNumber)) {
     logger.error("Phone number already taken");
     throw new ApiError(
       httpStatus.status.BAD_REQUEST,
       "Phone number already taken"
-    );
-  }
-  if (await Organization.isNameTaken(organizationName)) {
-    logger.error("Name already taken");
-    throw new ApiError(
-      httpStatus.status.BAD_REQUEST,
-      "Organization name already taken"
     );
   }
 
@@ -45,24 +48,27 @@ const createManufacturer = async (manufacturerBody) => {
     const user = await User.create({
       name,
       email,
-      newPassword,
+      password: newPassword,
       phoneNumber,
       role: "manufacturer",
     });
 
     const admin = await Admin.create({
-      userId: user._id,
-      orgId: organization._id,
+      userId: user.id,
+      orgId: organization.id,
     });
 
     const emailResponse = await sendMail(
-      "truBusiness",
+      "manthankurhekar8@gmail.com",
       email,
       "Welcome to our website",
       "text",
       `<h1>This is your email: ${email}</h1><h1>This is your password: ${newPassword}</h1>`
     );
-
-    logger.info(emailResponse);
+    logger.info(JSON.stringify(emailResponse, null, 2));
   }
+};
+
+module.exports = {
+  createManufacturer,
 };

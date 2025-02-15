@@ -8,3 +8,10 @@
 
 5) i have currently hard coded the value for response.body.verdict -> true which
    tells whether to accept the registration request or not
+
+6) if there are any issues with smtp, check the logs
+
+7) manufacturer and dealer user karo har jagah pe, not retailer 
+
+// agar mail send nahi hua to user ko kaise pata chalega ki kuch wrong h krke
+// 

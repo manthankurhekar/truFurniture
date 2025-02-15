@@ -4,7 +4,7 @@ const ApiError = require('../utils/ApiError');
 const logger = require('../config/logger');
 
 // provide email and password and this function will check if the use exists
-// if not then it will throw and error
+// if not then it will throw an error
 const loginUserWithEmailAndPassword = async (email, password) => {
   const user = await userService.getUserByEmail(email);
   if (!user || !(await user.isPasswordMatch(password))) {

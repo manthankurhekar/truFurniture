@@ -24,7 +24,7 @@ const login = {
 // };
 
 module.exports = {
-  register,
+  registerAsManufacturer,
   login,
   // logout
 };

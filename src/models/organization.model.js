@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const toJSON = require("./plugins/toJSON.plugin");
 
-const orgSchema = mongoose.Schema({
+const organizationSchema = mongoose.Schema({
   name: {
     type: String,
     required: false,
@@ -27,12 +27,12 @@ const orgSchema = mongoose.Schema({
 });
 
 organizationSchema.statics.isNameTaken = async function (name, excludeOrgId) {
-  const org = await this.findOne({ name, _id: { $ne: excludeOrgId } });
+  const org = await this.findOne({ name, id: { $ne: excludeOrgId } });
   return !!org;
 };
 
-orgSchema.plugin(toJSON);
+organizationSchema.plugin(toJSON);
 
-const Organization = mongoose.model("Organization", orgSchema);
+const Organization = mongoose.model("Organization", organizationSchema);
 
 module.exports = Organization;

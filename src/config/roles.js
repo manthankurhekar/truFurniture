@@ -1,5 +1,5 @@
 const allRoles = {
-  admin: [],
+  manufacturer: [],
   dealer: [],
 };
 

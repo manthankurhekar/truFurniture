@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const toJSON = require("./plugins/toJSON.plugin");
 const logger = require("../config/logger");
 
@@ -99,12 +99,12 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
-  const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
+  const user = await this.findOne({ email, id: { $ne: excludeUserId } });
   return !!user;
 };
 
 userSchema.statics.isPhoneNumberTaken = async function (phoneNumber, excludeUserId) {
-  const user = await this.findOne({ phoneNumber, _id: { $ne: excludeUserId } });
+  const user = await this.findOne({ phoneNumber, id: { $ne: excludeUserId } });
   return !!user;
 };
 
