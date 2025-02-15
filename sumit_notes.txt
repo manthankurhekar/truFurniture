@@ -1,0 +1,27 @@
+I am improving OTP model, So that it will store one flag isEmailverified to check status while creating dealer.
+
+
+OTP model have this below line.
+index: { expires: "5m" }
+
+OTP auto-expiration is handled by MongoDB’s TTL (Time-To-Live) Index.
+
+MongoDB TTL Index Runs Every 60 Seconds
+MongoDB's internal process checks for expired documents every 60 seconds, so OTPs might remain in the DB for up to 1 extra minute after expiration.
+
+✅ Correct Flow:
+1️⃣ Admin enters dealer email & requests OTP → OTP is stored in OTP collection. OTP collection will auto delete after 5 mins
+2️⃣ Admin enters OTP & verifies it →
+
+If valid, update isVerified: true in OTP collection.
+3️⃣ Admin fills dealer details & clicks "Add Dealer" →
+Check if OTP is verified (isVerified: true).
+Create a User with a hashed password.
+Create a Dealer linked to the User.
+Send the password via email to the dealer.
+
+Flow is working fine
+    1. generateOTP
+        verifyOTP
+            addDealer
+    2. getDealers
