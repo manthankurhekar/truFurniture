@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const toJSON = require("./plugins/toJSON.plugin");
 const logger = require("../config/logger");
 
@@ -35,23 +35,23 @@ const userSchema = mongoose.Schema(
         },
       ],
     },
+
     password: {
-      type: String,
-      required: true,
+      type: String,// removed password requirred cause we are sending it from server side
       trim: true,
       minlength: 8,
       validate(value) {
-        if (value.empty() || !value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
-          logger.error(
-            "Password must contain at least one letter and one number"
-          );
-          throw new Error(
-            "Password must contain at least one letter and one number"
-          );
+        if (!value || value.length === 0) { // Check if empty
+          throw new Error("Password cannot be empty");
+        }
+        if (!/\d/.test(value) || !/[a-zA-Z]/.test(value)) { // Check for letters and numbers
+          logger.error("Password must contain at least one letter and one number");
+          throw new Error("Password must contain at least one letter and one number");
         }
       },
       private: true, // used by the toJSON plugin
     },
+
     phoneNumber: {
       type: String,
       required: true,
@@ -90,7 +90,10 @@ userSchema.pre("save", async function (next) {
   try {
     const user = this;
     if (user.isModified("password")) {
-      user.password = await bcrypt.hash(user.password, 8);
+      console.log("Password before hashing:", user.password); // Debugging
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(user.password, salt);
+      console.log("Password after hashing:", user.password); // Debugging
     }
     next();
   } catch (err) {

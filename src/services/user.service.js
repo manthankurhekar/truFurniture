@@ -8,8 +8,8 @@ const createUser = async (userBody) => {
     logger.error("Email already taken");
     throw new ApiError(httpStatus.status.BAD_REQUEST, "Email already taken");
   }
-  logger.info("User created successfully");
   const user = await User.create(userBody);
+  logger.info("User created successfully");
   return user;
 };
 
@@ -28,9 +28,9 @@ const getUserById = async (id) => {
   return await User.findById(id);
 };
 
-module.exports = {
-  createUser,
-  getUsers,
-  getUserByEmail,
-  getUserById,
-};
+// module.exports = {
+//   createUser,
+//   getUsers,
+//   getUserByEmail,
+//   getUserById,
+// };
