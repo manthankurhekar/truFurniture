@@ -6,7 +6,11 @@ const Organization = require("../models/organization.model");
 const crypto = require("crypto");
 const Admin = require("../models/admin.model");
 const { sendMail } = require("../services/email.service");
-const disposableEmail = require('disposable-email');
+const disposableEmail = require("disposable-email");
+const {
+  validateEmail,
+  validateDisposableEmail,
+} = require("../utils/emailValidations");
 // manufacturer body contains
 // organizationName, email, phoneNumber, name
 
@@ -16,16 +20,13 @@ const createManufacturer = async (manufacturerBody) => {
     logger.error("Email already taken");
     throw new ApiError(httpStatus.status.BAD_REQUEST, "Email already taken");
   }
-  const validateEmail = (email) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
-  if (!validateEmail(email) && !disposableEmail.validate(email)) {
+  if (!validateEmail(email)) {
     logger.error("Email is invalid");
     throw new ApiError(httpStatus.status.BAD_REQUEST, "Email is invalid");
+  }
+  if (!validateDisposableEmail(email)) {
+    logger.error("Email is disposable");
+    throw new ApiError(httpStatus.status.BAD_REQUEST, "Email is disposable");
   }
   if (await User.isPhoneNumberTaken(phoneNumber)) {
     logger.error("Phone number already taken");
@@ -34,7 +35,6 @@ const createManufacturer = async (manufacturerBody) => {
       "Phone number already taken"
     );
   }
-
   // i have hard coded it here for now
   const response = { body: { verdict: true } };
 
@@ -67,6 +67,12 @@ const createManufacturer = async (manufacturerBody) => {
     );
     logger.info(JSON.stringify(emailResponse, null, 2));
   }
+  const manufacturerDetails = {
+    orgName: organizationName, 
+    manufacturerName: name, 
+    email, phoneNumber
+  }; 
+  return manufacturerDetails;
 };
 
 module.exports = {

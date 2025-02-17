@@ -2,14 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const toJSON = require("./plugins/toJSON.plugin");
 const logger = require("../config/logger");
-
-const validateEmail = async (email) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    logger.error("Email is invalid");
-    throw new Error("Email is invalid");
-  }
-};
+const { validateEmail } = require('../utils/emailValidations');
 
 const userSchema = mongoose.Schema(
   {

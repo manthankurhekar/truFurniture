@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const userService = require('./retailer.service');
+const userService = require('./user.service');
 const ApiError = require('../utils/ApiError');
 const logger = require('../config/logger');
 
